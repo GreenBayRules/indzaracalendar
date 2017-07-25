@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Event Calendar</title>
+  <meta name="description" content="Event Calendar">
+  <meta name="author" content="SitePoint">
+<link href='https://fonts.googleapis.com/css?family=Aclonica' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Fresca">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
+    </head>
+<body onload="update('calendar')">
+    
+<style>
+    #settings {
+        font-family: 'Fresca';
+        
+    }
+body {
+  font-family: 'Sofia'; 
+    font-size: 20px;
+}
+.month {
+    font-family: 'Aclonica';
+    font-size: 22px;
+}
+#main{
+ border-style: dashed;}
+.days {
+   color: blue; 
+} 
+.SUN,.SAT {
+  color: red; 
+}
+    .setList {
+        padding-bottom: 5px;
+    }
+.head {
+  background-color:brown; 
+  color:yellow;
+}
+    #calendar {
+        position:relative;
+    }
+    .setBox {
+        height:20px;
+        font-size:12px;
+        width: 100px;
+        clear: both;
+        padding: 5px;
+        display: inline;
+        padding: 5px;
+        border: 3px solid lightblue;
+        border-radius: 5px;
+        color: #333;
+        transition: all 0.3s ease-out;
+    }
+    #title {
+        
+        width: 200px;
+    }
+    #update {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+    #settings {
+        border-radius: 15px;
+        background: linear-gradient(141deg, #1FA2FF 0%, #12D8FA   51%, #66a6ff 75%);
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right:20px;
+        padding-top:5px;
+        display:none;
+        font-size: medium;
+        font-weight: lighter;
+        color:white;
+    }
+    #settings > h1 {
+        font-size: larger;
+    }
+    .settings {
+        vertical-align: top;
+    }
+#update:hover {background-color: #3e8e41;}
+
+#update:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+    #titleOfSettings {
+        -webkit-margin-after: 0em;
+    }
+    #calendar {
+        left:19%;
+        top:50%;
+    }
+    .settings {
+        display: inline-block;
+    }
+    p {
+        font-size: medium;
+        font-family: calibri;
+    }
+    hr {
+        margin: 0;
+        border: none;
+        border-bottom: 1px solid;
+    }
+    #checkboxdiv {
+        font-family: calibri;
+        font-weight: lighter;
+        font-style: italic;
+    }
+    #settings {
+        overflow-y: auto;
+        height: 800px;
+    }
+    table {
+    border-collapse: collapse;
+    }
+        #addNewHoliday {
+            background-color: #4caf50;
+            border-radius: 15px;
+            color: white;
+            border: none;
+            height: 30px;
+            width: 50px;
+            box-shadow: 1px 6px #999999;
+            cursor: pointer;
+            text-align: center;
+            outline: none;
+        }
+    #addNewHoliday:hover {
+        background-color: #3e8e41;
+    }
+    #addNewHoliday:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+    select {
+            position: relative;
+    width: 100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    cursor: pointer;
+    outline: none;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    height: 20px;
+        border:none;
+    }
+}
+    
+
+
+
+
+</style>
+    
+      <img onclick = "toggleOnOff()"src="http://www.freeiconspng.com/uploads/settings-icon-6.png" style="height: 50px;">
+    <table>
+        <td>
+<div id="settings" style="color:white;" class="animated slideInLeft">
+    <h1 id="titleOfSettings" style="font-weight:lighter;font-size:50px; font-family:Corbel;">Settings:</h1>
+    <hr>
+    <ul>
+        <li class="settings">
+            <h1 style="font-size: 25px; font-family:calibri; font-weight:lighter;" class="animated slideInLeft">Basic Settings:</h1>
+            <hr>
+            <p class="animated slideInLeft">
+                            <i>Choose a year between 1 - 275,000</i>
+                        </p>
+                <ul> 
+                    <li  class="setList">
+                        <h1 style="font-size: large; font-family:calibri;display:inline;font-weight:lighter;" class="animated slideInLeft">Year:</h1>
+                        <input value="2017" onchange="setDates()" placeholder="Year" height="100" class="setBox animated slideInLeft" id="year"/></h1>
+                    </li>
+                    <li  class="setList">
+                        <h1 style="font-size: large; font-family:calibri;display:inline; font-weight:lighter;" class="animated slideInLeft">Title: </h1>
+                        <input value="Event Calendar" placeholder="Title" height="100" class="setBox animated slideInLeft" id="title"/>
+                    </li>
+                </ul>
+        </li>
+        <li class="settings">
+            <h1 style="font-size: 25px; font-family:calibri;font-weight:lighter;" class="animated slideInLeft">Non-Business Days:</h1>
+            <hr>
+                <p class="animated slideInLeft">
+                            <i>Choose days which you would like to consider as non-business days. </i>
+                            <br>
+                            <i>These days will be highlighted in red font on the calendars.</i>
+                        </p>
+                <ul>  
+                    <li id="checkboxx" class="animated slideInLeft">
+                        <h1 style="font-size: large; font-family:calibri;display:inline;font-weight:lighter;" class="animated slideInLeft">Select all Non-Business Days:</h1>
+                        <br>
+                        <div id="checkboxdiv">
+                            <input type="checkbox" class = "days1" name="days" value="0" checked> Sunday<br>
+                            <input type="checkbox" class = "days1" name="days" value="1"> Monday<br>
+                            <input type="checkbox" class = "days1" name="days" value="2"> Tuesday<br>
+                            <input type="checkbox" class = "days1" name="days" value="3" > Wednesday<br>
+                            <input type="checkbox" class = "days1" name="days" value="4"> Thursday<br>
+                            <input type="checkbox" class = "days1" name="days" value="5"> Friday<br>
+                            <input type="checkbox" class = "days1" name="days" value="6" checked> Saturday<br>
+                        </div>
+                    </li>
+                    
+                </ul>
+            <h1 style="font-size: 25px; font-family:calibri;font-weight:lighter;" class="animated slideInLeft">Holidays:</h1>
+            <hr>
+            <p class="animated slideInLeft">
+                            <i>Choose vacation dates: </i>
+                            <br>
+                            <i>These days will be highlighted in red font on the calendars.</i>
+                        </p>
+            <div id="newHoliday">
+                <p style="display:inline;">Date: </p>
+                &nbsp;
+                <select id="month" onchange="setDates()">
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+                &nbsp;
+                <select id="date" style="width:30px;">
+                  
+                </select>
+                <br>
+                <br>
+                <p style="display:inline;">Holiday Name: </p>
+            <input value="unnamedHoliday" class="setBox animated slideInLeft" id = "holidayName"placeholder="Holiday"/>
+                <br>
+                <br>
+                <input type="button" id="addNewHoliday" value="Add"class="animated slideInLeft" onclick="createNewHoliday()"></input>
+            
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            <table class="settingTable" id="a" class= "animated slideInLeft"style="border: 1px solid white; font-weight: lighter; font-family: calibri;">
+                <tr style="border:dashed"><th class="settingTable" style="
+    font-size: larger;
+    font-weight: normal;
+                    border: dashed;
+">Date:</th>
+            <th class="settingTable" id="Holidayss" style="
+    font-size: larger;
+    font-weight: normal;
+                                                           border:dashed;
+">Holiday Name:</th>
+        </tr>
+            </table>
+        </li>
+        <li class="settings">
+                <h1 style="font-size: 25px; font-family:calibri;font-weight:lighter;" class="animated slideInLeft">Events:</h1>
+            <hr>
+            <br>
+            <p>Color</p>
+                <select id="month" onchange="setDates()">
+                  <option value="red">Red</option>
+                  <option value="blue">Blue</option>
+                  <option value="yellow">Yellow</option>
+                  <option value="green">Green</option>
+                  <option value="skyblue">Light Blue</option>
+                  <option value="purple">Purple</option>
+                  <option value="magenta">Magenta</option>
+                  <option value="brown">Brown</option>
+                  <option value="pink">Pink</option>
+                  <option value="orange">Orange</option>
+                </select>
+                
+            </li>
+    </ul>
+    <br>
+    <br>
+    <input id = "update"type="button" value="Update" onclick="update('calendar')"/>
+    
+      </div>
+    </td>
+<td id="calendar" class="animated slideInDown">
+
+
+    <h1 class="animated bounce" id="titleOfCalendar"><center id="titlee"></center></h1>
+    <center><h4 id = "subtitle"></h2></center>
+    <center><table class="table" id="main">
+      
+    </table></center>
+      </table>
+
+    <script>
+        
+        var startDayNum;
+        var daysOff;
+        const myDays =  ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+        const myDayAbbreviations = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+        const myMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        function setDates () {
+            var inDate = document.getElementById("date");
+            inDate.innerHTML = "";
+            var inMonth = document.getElementById("month").value;
+            var year = document.getElementById("year").value;
+            for (var i = 1; i <= daysInMonth(inMonth-1,year);i++) {
+                var op = document.createElement("OPTION");
+                op.value = i;
+                op.textContent = i;
+                document.getElementById("date").appendChild(op);
+            }
+        }
+        function update(view) {
+            
+            var year = document.getElementById("year").value;
+            setDates();
+            var inputs = document.getElementById("checkboxx").getElementsByTagName("input");
+               daysOff = [];
+            
+            for (var i = 0, max = inputs.length; i < max; i += 1) {
+                if (inputs[i].type === "checkbox" && inputs[i].checked) {
+                    daysOff.push(inputs[i].value);
+                }
+            }
+            if (!(year < 275001 && year > 0)){
+                swal(
+                    'Oops!',
+                    'Your year is not between 1 and 275,000',
+                    'error',
+                )
+            }
+            else {
+            document.getElementById("titlee").innerHTML = document.getElementById("title").value;
+            swal(
+                'Calendar initialized',
+                year+' Calendar Year',
+                'success'
+            );
+                document.getElementById("subtitle").innerHTML = year + " Calendar Year";
+            document.getElementById("main").innerHTML = "";  
+            
+              var startDay = findStartDay(year, 0, 1);
+              switch(view) {
+                  case "calendar" :
+                      createYear(year); 
+                      
+                      //update Calendars holidays
+                      var trs = document.getElementsByClassName("holiDate");
+                      for (var i = 0; i < trs.length; i++) {
+                          var month = trs[i].innerText.substring(0, trs[i].innerText.indexOf('/'));
+                          var day = trs[i].innerText.substring(trs[i].innerText.indexOf('/')+1);
+                          (document.getElementById(myMonths[month-1])).getElementsByClassName(day)[0].style = "";
+                          (document.getElementById(myMonths[month-1])).getElementsByClassName(day)[0].style.color = "red";
+                      }
+                        for (var i = 0; i < 12; i++) {
+                            document.getElementsByClassName(6)[i].style.color = "";
+                        }
+                      break;
+                  default :
+                      swal(
+                          "an error",
+                          "Must have had a typo!",
+                          "error",
+                      );
+              }
+            }
+            
+            
+        }
+        function toggleOnOff(){
+            if (document.getElementById("settings").style.cssText.includes("block;")) {
+                document.getElementById("settings").style.display = "none";
+                document.getElementById("calendar").style.left = "19%";
+            }
+            else {
+                document.getElementById("settings").style.display = "block";
+                document.getElementById("calendar").style.left = "0%";
+            }
+        }
+          function daysInMonth(month,year) {
+            return new Date(year, month+1, 0).getDate();
+          }   
+
+          function findStartDay (year, month, date) {
+              var d = new Date(year, month, date);
+              startDayNum = d.getDay();
+              return myDays[startDayNum];
+          }
+          function createYear (year) {
+              for (var i = 0; i < 12; i++) {
+                  createMonth(i, year, findStartDay(year, i, 1));
+              }
+              for (var i = 0; i < daysOff.length; i++) {
+                  var divs =  document.getElementsByClassName(daysOff[i]);
+                  for(var j = 0; j < divs.length; j++) {
+                    divs[j].style.cssText="color:red;";
+                      
+                  }
+              }
+          }
+        var counter = 0;
+          function createMonth (monthNum, year, monthStartDay){
+              if (counter % 4 == 0) {
+                var tr = document.createElement("TR");
+                tr.className = "month";
+                tr.id = counter;
+                tr.style.cssText="font-family: 'Aclonica';font-size: 22px;";
+                document.getElementById("main").appendChild(tr);
+              }
+              var th = document.createElement("TH");
+              th.id = myMonths[monthNum];
+              th.className = "title";
+              var divhead = document.createElement("DIV");
+              divhead.className = "head";
+              var texthead = document.createTextNode(myMonths[monthNum]);
+              divhead.appendChild(texthead);
+              th.appendChild(divhead);
+              var subTable = document.createElement("TABLE");
+              subTable.style.cssText = "font-size:18px;";
+              var subTableRow = document.createElement("TR");
+              subTableRow.className = "days";
+              for (var i = 0; i < myDayAbbreviations.length; i++) {
+                var subTableItem = document.createElement("TD");  
+                subTableItem.appendChild(document.createTextNode(myDayAbbreviations[i]));
+                subTableRow.appendChild(subTableItem);
+              }
+              subTable.appendChild(subTableRow);
+              var endDate = createWeek(monthNum, 1, year, monthStartDay, subTable);
+              for (var i = 0; i < 5; i++){
+                endDate = createWeek(monthNum, endDate, year,"Sunday", subTable);
+              }
+              th.appendChild(subTable);
+              document.getElementById(counter - (counter % 4)).appendChild(th);
+              counter++;
+          }
+          function createWeek (monthNum, startDate, year, startDay, table) {
+              //startDay is Sunday, monday...
+              var lastday = daysInMonth(monthNum, year);
+              var week = document.createElement("TR");
+              if (startDate == 0) {
+                  for (var i = 0; i < 7; i++) {
+                      var day = document.createElement("TH");
+                      day.className = i;
+                      day.style = "";
+                      day.innerHTML += "&nbsp";
+                      week.appendChild(day);
+                  }
+                  table.appendChild(week);
+                  return 0;
+              }
+              var starter = myDays.indexOf(startDay);
+              for (var i = 0; i < starter; i++) {
+                  var day = document.createElement("TH");
+                  week.appendChild(day);
+              }
+              for (var i = starter; i < 7; i++) {
+                  var day = document.createElement("TH");
+                  day.className = i;
+                  day.appendChild(document.createTextNode(startDate));
+                  day.className += " " + startDate;
+                  week.appendChild(day);
+                  startDate++;
+                  if(startDate > lastday) {
+                      table.appendChild(week);
+                      return 0;
+                  }
+              }
+              table.appendChild(week);
+              return startDate;
+          }
+        function createNewHoliday() {
+            var month = document.getElementById("month").value;
+            var date = document.getElementById("date").value;
+            var a = document.getElementById("a");
+            var tr = document.createElement("TR");
+            var holidayNAME = document.getElementById("holidayName");
+            var th = document.createElement("TD");
+            th.textContent = month + "/" + date + "  ";
+            th.className = "holiDate";
+            th.style = "";
+            th.style.border = "dashed";
+            tr.appendChild(th);
+            var th2 = document.createElement("TD");
+            th2.textContent = holidayNAME.value;
+            th2.className = "holidayName";
+            th2.style = "";
+            th2.style.border = "dashed";
+            tr.appendChild(th2);
+            a.appendChild(tr);
+            
+        }
+        
+    </script>
+    
+</body>
+</html>
