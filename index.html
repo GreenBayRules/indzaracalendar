@@ -291,7 +291,7 @@ body {
                 <h1 style="font-size: 25px; font-family:calibri;font-weight:lighter;" class="animated slideInLeft">Events:</h1>
             <hr style="width: 260px;">
             <br>
-            <p style="display:inline;">Color:</p>
+            <p class="animated slideInLeft"style="display:inline;">Color:</p>
                 <select id="month" onchange="setDates()">
                   <option value="red">Red</option>
                   <option value="blue">Blue</option>
@@ -308,6 +308,9 @@ body {
             <br>
             <p style="display:inline;">Event Name: </p>
             <input></input>
+            <p style="">Choose Event Type:</p>
+            <input  type="radio" name="eventType" value="onetime"> <p  style="display:inline">One-Time</p>
+  <input type="radio" name="eventType" value="Repeating"><p style="display:inline"> Repeating</p><br>
             </li>
     </ul>
     <br>
