@@ -309,8 +309,11 @@ body {
             <p style="display:inline;">Event Name: </p>
             <input></input>
             <p style="">Choose Event Type:</p>
-            <input  type="radio" name="eventType" value="onetime"> <p  style="display:inline">One-Time</p>
-  <input type="radio" name="eventType" value="Repeating"><p style="display:inline"> Repeating</p><br>
+            <input  type="radio" name="eventType" value="onetime" onchange="changeEventInput()" checked> <p  style="display:inline">One-Time</p>
+  <input type="radio" name="eventType" value="Repeating"><p style="display:inline"> Repeating</p>
+    <br>
+    <p class="one-time" style="display:inline;">Choose Date:</p>&nbsp;&nbsp;<input class="one-time" type="date"></input>
+    <p class="repeating" style="display:none;">Choose Day of :</p>&nbsp;&nbsp;<input class="repeating" type="week"></input>
             </li>
     </ul>
     <br>
@@ -326,13 +329,16 @@ body {
     <center><h4 id = "subtitle"></h2></center>
     <center><table class="table" id="main">
       
-    </table></center>
+    </table>
+    <table class="table" id="events"><td id="eventName">Event Name:</td><td id="dates">Dates:</td></table>
+    </center>
       </table>
 
     <script>
         
         var startDayNum;
         var daysOff;
+        var event;
         const myDays =  ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
         const myDayAbbreviations = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
         const myMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -393,6 +399,7 @@ body {
                         for (var i = 0; i < 12; i++) {
                             document.getElementsByClassName(6)[i].style.color = "";
                         }
+                      addCurrentEvents(event);
                       break;
                   default :
                       swal(
@@ -405,6 +412,15 @@ body {
             
             
         }
+        
+        function addCurrentEvents(objectOfElements) {
+            
+        }
+        
+        function changeEventInput() {
+            
+        }
+        
         function toggleOnOff(){
             if (document.getElementById("settings").style.cssText.includes("block;")) {
                 document.getElementById("settings").style.display = "none";
