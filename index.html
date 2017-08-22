@@ -292,7 +292,7 @@ body {
             <hr style="width: 260px;">
             <br>
             <p class="animated slideInLeft"style="display:inline;">Color:</p>
-                <select id="month" onchange="setDates()">
+                <select id="mont" onchange="setDates()">
                   <option value="red">Red</option>
                   <option value="blue">Blue</option>
                   <option value="yellow">Yellow</option>
@@ -307,14 +307,16 @@ body {
             <br>
             <br>
             <p style="display:inline;">Event Name: </p>
-            <input></input>
+            <input id="eventName"></input>
             <p style="">Choose Event Type:</p>
-            <input  type="radio" name="eventType" value="onetime" onchange="changeEventInput()" checked> <p  style="display:inline">One-Time</p>
-  <input type="radio" name="eventType" value="Repeating"><p style="display:inline"> Repeating</p>
+            <input  id="one-time" type="radio" name="eventType" value="onetime" onchange="changeEventInput()" > <p  style="display:inline">One-Time</p>
+  <input id="repeating" type="radio" name="eventType" value="Repeating" onchange="changeEventInput()"><p style="display:inline"> Repeating</p>
     <br>
-    <p class="one-time" style="display:inline;">Choose Date:</p>&nbsp;&nbsp;<input class="one-time" type="date"></input>
-    <p class="repeating" style="display:none;">Choose Day of :</p>&nbsp;&nbsp;<input class="repeating" type="week"></input>
-            </li>
+    <p class="one-time" style="display:inline;">Choose Date:</p><input id="evedate"class="one-time" type="date"></input>
+    <p class="repeating" style="display:none;">Choose Day of Week repeating:</p><input class="repeating" type="input" style="display:none;"></input>
+    <input type="button" id="addNewHoliday" value="Add"class="animated slideInLeft" onclick="addToArray()"></input>
+
+</li>
     </ul>
     <br>
     <br>
@@ -325,12 +327,13 @@ body {
 <td id="calendar" class="animated slideInDown">
 
 
-    <h1 class="animated bounce" id="titleOfCalendar"><center id="titlee"></center></h1>
-    <center><h4 id = "subtitle"></h2></center>
+    
     <center><table class="table" id="main">
-      
+      <h1 class="animated bounce" id="titleOfCalendar"><center id="titlee"></center></h1>
+    <center><h4 id = "subtitle"></h2></center>
     </table>
-    <table class="table" id="events"><td id="eventName">Event Name:</td><td id="dates">Dates:</td></table>
+        <br>
+    <table class="table" id="events" style="border-color: black; border-width: 1px; border: solid; width: 1000px;"><td id="eventNameLabe">Event Name:</td><td style="border:solid;" id="dates">Dates:</td></table>
     </center>
       </table>
 
@@ -339,6 +342,8 @@ body {
         var startDayNum;
         var daysOff;
         var event;
+        var event1;
+        var arrayOfEvents = [];
         const myDays =  ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
         const myDayAbbreviations = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
         const myMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -396,10 +401,20 @@ body {
                           (document.getElementById(myMonths[month-1])).getElementsByClassName(day)[0].style = "";
                           (document.getElementById(myMonths[month-1])).getElementsByClassName(day)[0].style.color = "red";
                       }
-                        for (var i = 0; i < 12; i++) {
-                            document.getElementsByClassName(6)[i].style.color = "";
-                        }
-                      addCurrentEvents(event);
+                      addCurrentEvents(arrayOfEvents);
+                      for (var i = 0; i < arrayOfEvents.length; i++) {
+                          var a = arrayOfEvents[i].dates.substring(arrayOfEvents[i].dates.indexOf("-")+1,arrayOfEvents[i].dates.indexOf("-")+3); 
+                          var a = parseInt(a);
+                          
+                          var b = (arrayOfEvents[i].dates.substring(((arrayOfEvents[i].dates.indexOf("-")+1)))).substring(3);
+                          var b = parseInt(b);
+                          var j = 0;
+                          while ((document.getElementById(myMonths[a-1])).getElementsByClassName(b)[j].innerText != b.toString()) {
+                              j++;
+                          }
+                          (document.getElementById(myMonths[a-1])).getElementsByClassName(b)[j].style = "";
+                          (document.getElementById(myMonths[a-1])).getElementsByClassName(b)[j].style.color = arrayOfEvents[i].color;
+                      }
                       break;
                   default :
                       swal(
@@ -413,12 +428,43 @@ body {
             
         }
         
+        function addToArray () {
+            event1 = "{".concat(((((" \"name\" : \"".concat(document.getElementById("eventName").value)).concat("\", \"dates\" : \"")).concat(document.getElementById("evedate").value)).concat(("\", \"color\" : \"").concat((document.getElementById("mont").value).concat("\"")))).concat(" }"));
+            arrayOfEvents.push(JSON.parse(event1));
+        }
+        
         function addCurrentEvents(objectOfElements) {
-            
+            document.getElementById("eventNameLabe").innerHTML = "<th id=\"eventNameLabe\">Event Name:</th>";
+            document.getElementById("dates").innerHTML = "<th style=\"border:solid;\" id=\"dates\">Dates:</th>";
+            for (var i = 0; i < objectOfElements.length; i++) {
+                var newRow = document.createElement("TR");
+                newRow.appendChild(document.createTextNode(objectOfElements[i].name));
+                var newRow1 = document.createElement("TR");
+                newRow1.appendChild(document.createTextNode(objectOfElements[i].dates));
+                document.getElementById("eventNameLabe").appendChild(newRow);
+                document.getElementById("dates").appendChild(newRow1);
+            }
         }
         
         function changeEventInput() {
-            
+            var oneTimeArray = Array.prototype.slice.call(document.getElementsByClassName("one-time"));
+            var repeatingArray = Array.prototype.slice.call(document.getElementsByClassName("repeating"));
+            if (document.getElementById("one-time").checked) {
+                oneTimeArray.forEach(function(element){
+                    element.style.display = "block";
+                });
+                repeatingArray.forEach(function(element){
+                    element.style.display = "none";
+                });
+            }
+            else {
+                repeatingArray.forEach(function(element){
+                    element.style.display = "block";
+                });
+                oneTimeArray.forEach(function(element){
+                    element.style.display = "none";
+                });
+            }
         }
         
         function toggleOnOff(){
