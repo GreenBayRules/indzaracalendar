@@ -16,14 +16,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
     </head>
 <body onload="update('calendar')">
-    
+
 <style>
     #settings {
         font-family: 'Fresca';
-        
+
     }
 body {
-  font-family: 'Sofia'; 
+  font-family: 'Sofia';
     font-size: 20px;
 }
 .month {
@@ -33,16 +33,16 @@ body {
 #main{
  border-style: dashed;}
 .days {
-   color: blue; 
-} 
+   color: blue;
+}
 .SUN,.SAT {
-  color: red; 
+  color: red;
 }
     .setList {
         padding-bottom: 5px;
     }
 .head {
-  background-color:brown; 
+  background-color:brown;
   color:yellow;
 }
     #calendar {
@@ -62,7 +62,7 @@ body {
         transition: all 0.3s ease-out;
     }
     #title {
-        
+
         width: 200px;
     }
     #update {
@@ -173,13 +173,13 @@ body {
         border:none;
     }
 }
-    
+
 
 
 
 
 </style>
-    
+
       <img onclick = "toggleOnOff()"src="http://www.freeiconspng.com/uploads/settings-icon-6.png" style="height: 50px;">
     <table>
         <td>
@@ -193,7 +193,7 @@ body {
             <p class="animated slideInLeft">
                             <i>Choose a year between 1 - 275,000</i>
                         </p>
-                <ul> 
+                <ul>
                     <li  class="setList">
                         <h1 style="font-size: large; font-family:calibri;display:inline;font-weight:lighter;" class="animated slideInLeft">Year:</h1>
                         <input value="2017" onchange="setDates()" placeholder="Year" height="100" class="setBox animated slideInLeft" id="year"/></h1>
@@ -212,7 +212,7 @@ body {
                             <br>
                             <i>These days will be highlighted in red font on the calendars.</i>
                         </p>
-                <ul>  
+                <ul>
                     <li id="checkboxx" class="animated slideInLeft">
                         <h1 style="font-size: large; font-family:calibri;display:inline;font-weight:lighter;" class="animated slideInLeft">Select all Non-Business Days:</h1>
                         <br>
@@ -226,7 +226,7 @@ body {
                             <input type="checkbox" class = "days1" name="days" value="6" checked> Saturday<br>
                         </div>
                     </li>
-                    
+
                 </ul>
             <h1 style="font-size: 25px; font-family:calibri;font-weight:lighter;" class="animated slideInLeft">Holidays:</h1>
             <hr>
@@ -254,7 +254,7 @@ body {
                 </select>
                 &nbsp;
                 <select id="date" style="width:30px;">
-                  
+
                 </select>
                 <br>
                 <br>
@@ -263,15 +263,15 @@ body {
                 <br>
                 <br>
                 <input type="button" id="addNewHoliday" value="Add"class="animated slideInLeft" onclick="createNewHoliday()"></input>
-            
+
             </div>
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
             <br>
             <table class="settingTable" id="a" class= "animated slideInLeft"style="border: 1px solid white; font-weight: lighter; font-family: calibri;">
                 <tr style="border:dashed"><th class="settingTable" style="
@@ -312,8 +312,19 @@ body {
             <input  id="one-time" type="radio" name="eventType" value="onetime" onchange="changeEventInput()" > <p  style="display:inline">One-Time</p>
   <input id="repeating" type="radio" name="eventType" value="Repeating" onchange="changeEventInput()"><p style="display:inline"> Repeating</p>
     <br>
-    <p class="one-time" style="display:inline;">Choose Date:</p><input id="evedate"class="one-time" type="date"></input>
-    <p class="repeating" style="display:none;">Choose Day of Week repeating:</p><input class="repeating" type="input" style="display:none;"></input>
+    <p class="one-time event" id="one-time" style="display:inline;">Choose Date:</p><input id="evedate"class="one-time" type="date"></input>
+    <p class="repeating event" id="repeating" style="display:none;">Choose Day of Week repeating:</p>
+    <select id= "everepeatday"class="repeating" style="display:none;">
+    <option value="0"> Sunday </option>
+    <option value="1"> Monday</option>
+    <option value="2"> Tuesday</option>
+    <option value="3" > Wednesday</option>
+    <option value="4"> Thursday</option>
+    <option value="5"> Friday</option>
+    <option value="6"> Saturday</option>
+
+</select>
+  </input>
     <input type="button" id="addNewHoliday" value="Add"class="animated slideInLeft" onclick="addToArray()"></input>
 
 </li>
@@ -321,13 +332,13 @@ body {
     <br>
     <br>
     <input id = "update"type="button" value="Update" onclick="update('calendar')"/>
-    
+
       </div>
     </td>
 <td id="calendar" class="animated slideInDown">
 
 
-    
+
     <center><table class="table" id="main">
       <h1 class="animated bounce" id="titleOfCalendar"><center id="titlee"></center></h1>
     <center><h4 id = "subtitle"></h2></center>
@@ -338,7 +349,7 @@ body {
       </table>
 
     <script>
-        
+
         var startDayNum;
         var daysOff;
         var event;
@@ -360,12 +371,12 @@ body {
             }
         }
         function update(view) {
-            
+
             var year = document.getElementById("year").value;
             setDates();
             var inputs = document.getElementById("checkboxx").getElementsByTagName("input");
                daysOff = [];
-            
+
             for (var i = 0, max = inputs.length; i < max; i += 1) {
                 if (inputs[i].type === "checkbox" && inputs[i].checked) {
                     daysOff.push(inputs[i].value);
@@ -386,13 +397,13 @@ body {
                 'success'
             );
                 document.getElementById("subtitle").innerHTML = year + " Calendar Year";
-            document.getElementById("main").innerHTML = "";  
-            
+            document.getElementById("main").innerHTML = "";
+
               var startDay = findStartDay(year, 0, 1);
               switch(view) {
                   case "calendar" :
-                      createYear(year); 
-                      
+                      createYear(year);
+
                       //update Calendars holidays
                       var trs = document.getElementsByClassName("holiDate");
                       for (var i = 0; i < trs.length; i++) {
@@ -403,9 +414,11 @@ body {
                       }
                       addCurrentEvents(arrayOfEvents);
                       for (var i = 0; i < arrayOfEvents.length; i++) {
-                          var a = arrayOfEvents[i].dates.substring(arrayOfEvents[i].dates.indexOf("-")+1,arrayOfEvents[i].dates.indexOf("-")+3); 
+
+                        if (arrayOfEvents[i].type == "one-time"){
+                          var a = arrayOfEvents[i].dates.substring(arrayOfEvents[i].dates.indexOf("-")+1,arrayOfEvents[i].dates.indexOf("-")+3);
                           var a = parseInt(a);
-                          
+
                           var b = (arrayOfEvents[i].dates.substring(((arrayOfEvents[i].dates.indexOf("-")+1)))).substring(3);
                           var b = parseInt(b);
                           var j = 0;
@@ -415,6 +428,15 @@ body {
                           (document.getElementById(myMonths[a-1])).getElementsByClassName(b)[j].style = "";
                           (document.getElementById(myMonths[a-1])).getElementsByClassName(b)[j].style.color = arrayOfEvents[i].color;
                       }
+                      else {
+                            var repeatDay = arrayOfEvents[i].repeatDay;
+                            var color = arrayOfEvents[i].color;
+                            for (var j = 0; j< document.getElementsByClassName(repeatDay).length; j++) {
+                              document.getElementsByClassName(repeatDay)[j].style = "";
+                                document.getElementsByClassName(repeatDay)[j].style.color = color;
+                            }
+                      }
+                    }
                       break;
                   default :
                       swal(
@@ -424,28 +446,51 @@ body {
                       );
               }
             }
-            
-            
+
+
         }
-        
+
         function addToArray () {
-            event1 = "{".concat(((((" \"name\" : \"".concat(document.getElementById("eventName").value)).concat("\", \"dates\" : \"")).concat(document.getElementById("evedate").value)).concat(("\", \"color\" : \"").concat((document.getElementById("mont").value).concat("\"")))).concat(" }"));
-            arrayOfEvents.push(JSON.parse(event1));
+          if (document.getElementById("one-time").checked) {
+            event1 = "{".concat(((((" \"type\" : \"one-time\", \"name\" : \"".concat(document.getElementById("eventName").value)).concat("\", \"dates\" : \"")).concat(document.getElementById("evedate").value)).concat(("\", \"color\" : \"").concat((document.getElementById("mont").value).concat("\"")))).concat(" }"));
+            event1 = JSON.parse(event1);
+            event1.type = "one-time";
+            arrayOfEvents.push(event1);
+          }
+          else {
+            console.log("notonetime");
+            event1 = "{".concat(((((" \"type\" : \"repeating\", \"name\" : \"".concat(document.getElementById("eventName").value)).concat("\", \"repeatDay\" : \"")).concat(document.getElementById("everepeatday").value)).concat(("\", \"color\" : \"").concat((document.getElementById("mont").value).concat("\"")))).concat(" }"));
+            event1 = JSON.parse(event1);
+            event1.type = "repeating";
+            arrayOfEvents.push(event1);
+          }
         }
-        
+
         function addCurrentEvents(objectOfElements) {
             document.getElementById("eventNameLabe").innerHTML = "<th id=\"eventNameLabe\">Event Name:</th>";
             document.getElementById("dates").innerHTML = "<th style=\"border:solid;\" id=\"dates\">Dates:</th>";
             for (var i = 0; i < objectOfElements.length; i++) {
+
+              if (objectOfElements[i].type == "one-time") {
                 var newRow = document.createElement("TR");
                 newRow.appendChild(document.createTextNode(objectOfElements[i].name));
                 var newRow1 = document.createElement("TR");
                 newRow1.appendChild(document.createTextNode(objectOfElements[i].dates));
                 document.getElementById("eventNameLabe").appendChild(newRow);
                 document.getElementById("dates").appendChild(newRow1);
+              }
+
+              else {
+                var newRow = document.createElement("TR");
+                newRow.appendChild(document.createTextNode(objectOfElements[i].name));
+                var newRow1 = document.createElement("TR");
+                newRow1.appendChild(document.createTextNode("Every "+objectOfElements[i].repeatDay));
+                document.getElementById("eventNameLabe").appendChild(newRow);
+                document.getElementById("dates").appendChild(newRow1);
+              }
             }
         }
-        
+
         function changeEventInput() {
             var oneTimeArray = Array.prototype.slice.call(document.getElementsByClassName("one-time"));
             var repeatingArray = Array.prototype.slice.call(document.getElementsByClassName("repeating"));
@@ -466,7 +511,7 @@ body {
                 });
             }
         }
-        
+
         function toggleOnOff(){
             if (document.getElementById("settings").style.cssText.includes("block;")) {
                 document.getElementById("settings").style.display = "none";
@@ -479,7 +524,7 @@ body {
         }
           function daysInMonth(month,year) {
             return new Date(year, month+1, 0).getDate();
-          }   
+          }
 
           function findStartDay (year, month, date) {
               var d = new Date(year, month, date);
@@ -494,7 +539,7 @@ body {
                   var divs =  document.getElementsByClassName(daysOff[i]);
                   for(var j = 0; j < divs.length; j++) {
                     divs[j].style.cssText="color:red;";
-                      
+
                   }
               }
           }
@@ -520,7 +565,7 @@ body {
               var subTableRow = document.createElement("TR");
               subTableRow.className = "days";
               for (var i = 0; i < myDayAbbreviations.length; i++) {
-                var subTableItem = document.createElement("TD");  
+                var subTableItem = document.createElement("TD");
                 subTableItem.appendChild(document.createTextNode(myDayAbbreviations[i]));
                 subTableRow.appendChild(subTableItem);
               }
@@ -587,10 +632,10 @@ body {
             th2.style.border = "dashed";
             tr.appendChild(th2);
             a.appendChild(tr);
-            
+
         }
-        
+
     </script>
-    
+
 </body>
 </html>
