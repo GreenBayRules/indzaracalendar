@@ -35,9 +35,6 @@ body {
 .days {
    color: blue;
 }
-.SUN,.SAT {
-  color: red;
-}
     .setList {
         padding-bottom: 5px;
     }
@@ -409,8 +406,8 @@ body {
                       for (var i = 0; i < trs.length; i++) {
                           var month = trs[i].innerText.substring(0, trs[i].innerText.indexOf('/'));
                           var day = trs[i].innerText.substring(trs[i].innerText.indexOf('/')+1);
-                          (document.getElementById(myMonths[month-1])).getElementsByClassName(day)[0].style = "";
-                          (document.getElementById(myMonths[month-1])).getElementsByClassName(day)[0].style.color = "red";
+                          (document.getElementById(myMonths[month-1])).getElementById(day+"d").style = "";
+                          (document.getElementById(myMonths[month-1])).getElementById(day+"d").style.color = "red";
                       }
                       addCurrentEvents(arrayOfEvents);
                       for (var i = 0; i < arrayOfEvents.length; i++) {
@@ -586,6 +583,7 @@ body {
                   for (var i = 0; i < 7; i++) {
                       var day = document.createElement("TH");
                       day.className = i;
+                      day.id = i + "d";
                       day.style = "";
                       day.innerHTML += "&nbsp";
                       week.appendChild(day);
@@ -602,7 +600,7 @@ body {
                   var day = document.createElement("TH");
                   day.className = i;
                   day.appendChild(document.createTextNode(startDate));
-                  day.className += " " + startDate;
+                  day.id = startDate + "d";
                   week.appendChild(day);
                   startDate++;
                   if(startDate > lastday) {
